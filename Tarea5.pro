@@ -15,25 +15,25 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     poligono.cpp \
-    prismatriangular.cpp \
-    prismarectangular.cpp \
     arco.cpp \
     cono.cpp \
-    cubo.cpp
+    cubo.cpp \
+    prismatriangular.cpp \
+    prismarectangular.cpp
 
 HEADERS  += mainwindow.h \
     poligono.h \
-    prismatriangular.h \
-    prismarectangular.h \
     arco.h \
     cono.h \
-    cubo.h
+    cubo.h \
+    prismatriangular.h \
+    prismarectangular.h
 
 FORMS    += mainwindow.ui \
     poligono.ui \
-    prismatriangular.ui \
-    prismarectangular.ui \
     arco.ui \
     cono.ui \
-    cubo.ui
+    cubo.ui \
+    prismatriangular.ui \
+    prismarectangular.ui
 

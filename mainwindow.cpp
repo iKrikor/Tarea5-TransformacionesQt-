@@ -45,18 +45,18 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-//    printf("botón4\n");
-//    prismaTriangular prismaT;
-//    prismaT.setModal(true);
-//    prismaT.exec();
+    printf("botón4\n");
+    prismaTriangular prismaT;
+    prismaT.setModal(true);
+    prismaT.exec();
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
-//    printf("botón5\n");
-//    PrismaRectangular prismaR;
-//    prismaR.setModal(true);
-//    prismaR.exec();
+    printf("botón5\n");
+    prismaRectangular prismaR;
+    prismaR.setModal(true);
+    prismaR.exec();
 }
 
 void MainWindow::on_pushButton_6_clicked()

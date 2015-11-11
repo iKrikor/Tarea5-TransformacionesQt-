@@ -1,78 +1,141 @@
-//#include "prismatriangular.h"
-//#include "ui_prismatriangular.h"
+#include "prismatriangular.h"
+#include "ui_prismatriangular.h"
+#include <QMessageBox>
+#include <math.h>
 
-//prismaTriangular::prismaTriangular(QWidget *parent) :
-//    QDialog(parent),
-//    ui(new Ui::prismaTriangular)
-//{
-//    ui->setupUi(this);
-//}
+void drawPrismaT(QPainter & painter);
 
-//prismaRectangular::prismaRectangular(int _translatePrismRFactorX, int _translatePrismRFactorY, double _scalePrismRFactor, int _rotatePrismRangle):ui(new Ui::cubo){
-//    dibujaPrismaR = true;
-//    translatePrismRFactorX = _translatePrismRFactorX;
-//    translatePrismRFactorY = _translatePrismRFactorY;
-//    scalePrismRFactor = _scalePrismRFactor;
-//    rotatePrismRangle = _rotatePrismRangle;
-//    ui->setupUi(this);
-//}
-
-//prismaTriangular::~prismaTriangular()
-//{
-//    delete ui;
-//}
+prismaTriangular::prismaTriangular(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::prismaTriangular)
+{
+    ui->setupUi(this);
+    centerX = width()/2;
+    centerY = height()/2;
+    QTransform center;
+    center.translate(centerX,centerY);
+    transforms.push_back(center);
+}
 
 
-//void prismaRectangular::paintEvent (QpaintEvent *e){
-//    QPainter painter(this);
-//    QPen pointPen(Qt::black);
-//    pointPen.setWidth(2);
-//    painter.setPen(pointPen);
-    
-//    //Reajusta el centro a la mitad de la pantlla
-//    int centerX = width()/2;
-//    int centerY = height()/2;
-//    painter.translate(centerX,centerY);
-    
-//    painter.scale(scaleCubeFactor,scaleCubeFactor);
-//    painter.rotate(rotateCubeAngle);
-//    painter.translate(translateCubeFactorX,translateCubeFactorY);
-    
-//    if(dibujaPrismaR)+
-//    {
-//        //Cuadrado 1
-//        int x0 = 300;
-//        int y0 = 350;
-//        int x1 = 350;
-//        int y1 = 350;
-//        int x2 = 300;
-//        int y2 = 200;
-//        int x3 = 350;
-//        int y3 = 200;
-        
-//        //Cuadrado 3
-//        int x4 = x0+30;
-//        int y4 = y0-50;
-//        int x5 = x1+30;
-//        int y5 = y1-50;
-//        int x6 = x2+30;
-//        int y6 = y2-50;
-//        int x7 = x3+30;
-//        int y7 = y3-50;
-        
-//        painter.drawLine(x0,y0,x1,y1);
-//        painter.drawLine(x2,y2,x3,y3);
-//        painter.drawLine(x2,y2,x0,y0);
-//        painter.drawLine(x3,y3,x1,y1);
-        
-//        painter.drawLine(x4,y4,x5,y5);
-//        painter.drawLine(x6,y6,x7,y7);
-//        painter.drawLine(x6,y6,x4,y4);
-//        painter.drawLine(x7,y7,x5,y5);
-        
-//        painter.drawLine(x0,y0,x4,y4);
-//        painter.drawLine(x1,y1,x5,y5);
-//        painter.drawLine(x2,y2,x6,y6);
-//        painter.drawLine(x3,y3,x7,y7);
-//    }
-//}
+prismaTriangular::~prismaTriangular()
+{
+    delete ui;
+}
+
+void prismaTriangular::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+    QPen pointPen(Qt::black);
+    pointPen.setWidth(2);
+    painter.setPen(pointPen);
+
+
+    if(dibuja)
+    {
+        for(int i=0; i<transforms.size(); ++i)
+        {
+            painter.setTransform(transforms[i],true);
+            drawPrismaT(painter);
+
+        }
+    }
+
+
+}
+
+void drawPrismaT(QPainter & painter){
+    int x1 = 0;
+    int y1 = -50;
+    int x2 = -25;
+    int y2 = -70;
+    int x3 = 25;
+    int y3 = -70;
+    int _x1 = 0;
+    int _y1 = -50+50;
+    int _x2 = -25;
+    int _y2 = -70+50;
+    int _x3 = 25;
+    int _y3 = -70+50;
+
+    painter.drawLine(x1,y1,x2,y2);
+    painter.drawLine(x1,y1,x3,y3);
+    painter.drawLine(x2,y2,x3,y3);
+    painter.drawLine(_x1,_y1,_x2,_y2);
+    painter.drawLine(_x1,_y1,_x3,_y3);
+    painter.drawLine(_x2,_y2,_x3,_y3);
+    painter.drawLine(x1,y1,_x1,_y1);
+    painter.drawLine(x2,y2,_x2,_y2);
+    painter.drawLine(_x3,_y3,x3,y3);
+}
+
+void prismaTriangular::on_pushButton_clicked()
+{
+    dibuja=!dibuja;
+    transforms.clear();
+    QTransform center;
+    center.translate(centerX,centerY);
+    transforms.push_back(center);
+    update();
+}
+
+void prismaTriangular::on_pushButton_2_clicked()
+{
+    QString xStr = ui->transX->toPlainText();
+    QString yStr = ui->transY->toPlainText();
+
+    if(!xStr.isEmpty() && !yStr.isEmpty())
+    {
+        int _xStr = xStr.toInt();
+        int _yStr = yStr.toInt();
+        QTransform translate;
+        translate.translate(_xStr, _yStr);
+        transforms.push_back(translate);
+    }
+
+    update();
+}
+
+void prismaTriangular::on_pushButton_3_clicked()
+{
+    QTransform zoomOut;
+    zoomOut.scale(0.5,0.5);
+    transforms.push_back(zoomOut);
+
+    update();
+}
+
+void prismaTriangular::on_pushButton_4_clicked()
+{
+    QTransform zoomIn;
+    zoomIn.scale(2,2);
+    transforms.push_back(zoomIn);
+    update();
+}
+
+void prismaTriangular::on_pushButton_5_clicked()
+{
+
+    QTransform rotate;
+    rotate.rotate(30);
+    transforms.push_back(rotate);
+    update();
+}
+
+void prismaTriangular::on_pushButton_6_clicked()
+{
+    QTransform zoomIn;
+    zoomIn.scale(-1,1);
+    transforms.push_back(zoomIn);
+    update();
+}
+
+void prismaTriangular::on_pushButton_7_clicked()
+{
+    QTransform zoomIn;
+    zoomIn.scale(1,-1);
+    transforms.push_back(zoomIn);
+    update();
+}
+
+
