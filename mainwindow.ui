@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Poígono</string>
+     <string>Polígono</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -89,7 +89,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Prisma rectangular</string>
+     <string>Prisma Rectangular</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_6">
